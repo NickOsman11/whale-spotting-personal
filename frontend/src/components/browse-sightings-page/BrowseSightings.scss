@@ -5,6 +5,14 @@ $fade-in-time: 0.5s;
   margin: 7px;
 }
 
+.location__link {
+  color: $white;
+
+  :visited {
+    color: $white;
+  }
+}
+
 .sighting-card {
   margin-bottom: 2rem;
   position: relative;

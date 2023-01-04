@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Sighting,
   ExternalSighting,
@@ -35,9 +36,6 @@ export const SightingCard: React.FunctionComponent<SightingProps> = ({
   } else {
     locationName = sighting.location?.description;
   }
-
-  console.log(sighting.location);
-  console.log(locationName);
 
   let speciesName: string | undefined;
   if (isExternalSighting(sighting)) {
@@ -77,7 +75,12 @@ export const SightingCard: React.FunctionComponent<SightingProps> = ({
         {locationName ? (
           <p className="sighting-card__information-container">
             <span className="sighting-card__information">Location: </span>
-            {locationName}
+            <Link
+              className="location__link"
+              to={"/sightings/locations/" + sighting.location?.id}
+            >
+              {locationName}
+            </Link>
           </p>
         ) : (
           <></>

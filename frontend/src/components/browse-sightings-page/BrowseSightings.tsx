@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   getSightings,
   getSightingsBySpeciesId,
+  getSightingsByLocationId,
   getExternalSightings,
   Sighting,
   ExternalSighting,
@@ -19,6 +20,12 @@ export const BrowseSightings: React.FC = () => {
   const [externalSightings, setExternalSightings] =
     useState<ExternalSighting[]>();
 
+  const [isShowingMap, setIsShowingMap] = useState(false);
+  const { speciesId, locationId } = useParams<{
+    speciesId: string;
+    locationId: string;
+  }>();
+
   let allSightings: GenericSighting[] = (
     (sightings as GenericSighting[]) ?? []
   ).concat(...(externalSightings ?? []));
@@ -27,37 +34,32 @@ export const BrowseSightings: React.FC = () => {
     compareDesc(getDate(a), getDate(b))
   );
 
-  const [isShowingMap, setIsShowingMap] = useState(false);
-
-  const { speciesId } = useParams<{ speciesId: string }>();
-
   useEffect(() => {
-    if (speciesId === undefined) {
+    if (speciesId !== undefined) {
+      getSightingsBySpeciesId(speciesId).then(setSightings);
+    } else if (locationId !== undefined) {
+      console.log(locationId);
+      getSightingsByLocationId(locationId).then((sightings) =>
+        setSightings(sightings)
+      );
+    } else {
       getSightings().then((sightings) => setSightings(sightings));
       getExternalSightings().then(setExternalSightings);
-    } else {
-      getSightingsBySpeciesId(speciesId).then(setSightings);
     }
-  }, [speciesId]);
+  }, [speciesId, locationId]);
 
   let contents = <></>;
 
   if (sightings === undefined && externalSightings === undefined) {
-    contents = <p>Loading</p>;
-  } else if (
-    sightings !== undefined &&
-    sightings.length === 0 &&
-    speciesId !== undefined
-  ) {
+    contents = <p>Loading...</p>;
+  } else if (sightings && speciesId && sightings.length === 0) {
     contents = <p>Sorry, we have no sightings of that species!</p>;
-  } else if (
-    sightings !== undefined &&
-    externalSightings !== undefined &&
-    allSightings.length === 0
-  ) {
+  } else if (sightings && locationId && sightings.length === 0) {
+    contents = <p>Sorry, we have no sightings from that location!</p>;
+  } else if (sightings && externalSightings && allSightings.length === 0) {
     contents = <p>Sorry, there are no sightings to display.</p>;
   } else if (
-    sightings !== undefined &&
+    sightings &&
     externalSightings === undefined &&
     allSightings.length === 0
   ) {
@@ -78,6 +80,7 @@ export const BrowseSightings: React.FC = () => {
         >
           {isShowingMap ? "List View" : "Map View"}
         </button>
+
         {isShowingMap ? (
           <SightingMap sightings={allSightings} />
         ) : (

@@ -177,6 +177,16 @@ export const getSightingsBySpeciesId = async (
   return sightingsListResponse.items;
 };
 
+export const getSightingsByLocationId = async (
+  locationId: string
+): Promise<Sighting[]> => {
+  const response = await fetch(
+    `${backendUrl}/sightings/locations/${locationId}`
+  );
+  const sightingsListResponse: ListResponse<Sighting> = await response.json();
+  return sightingsListResponse.items;
+};
+
 export const checkLogInDetails = async (
   username: string,
   password: string
