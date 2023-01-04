@@ -19,7 +19,6 @@ export const BrowseSightings: React.FC = () => {
   const [sightings, setSightings] = useState<Sighting[]>();
   const [externalSightings, setExternalSightings] =
     useState<ExternalSighting[]>();
-
   const [isShowingMap, setIsShowingMap] = useState(false);
   const { speciesId, locationId } = useParams<{
     speciesId: string;

@@ -201,7 +201,7 @@ export const checkLogInDetails = async (
 
 export async function createSighting(
   createSightingRequest: CreateSightingRequest
-) {
+): Promise<boolean> {
   const response = await fetch(`${backendUrl}/sightings`, {
     method: "POST",
     body: JSON.stringify(createSightingRequest),

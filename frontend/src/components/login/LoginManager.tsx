@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { checkLogInDetails, User } from "../../clients/apiClient";
+import { checkLogInDetails } from "../../clients/apiClient";
 
 type LoginContextType = {
   isLoggedIn: boolean;
