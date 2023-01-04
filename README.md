@@ -42,6 +42,7 @@ $env:POSITION_STACK_KEY = "e0ab3cbcba64dba8579d1dc9a79f2c78"
 Navigate to the `backend` folder and run:
 
 ```
+dotnet ef database update
 dotnet watch run
 ```
 
