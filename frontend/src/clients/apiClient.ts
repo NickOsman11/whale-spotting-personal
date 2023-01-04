@@ -1,4 +1,4 @@
-const backendUrl = process.env["REACT_APP_BACKEND_DOMAIN"];
+const backendUrl = process.env.BACKEND_URL || "https://localhost:5001";
 
 export interface ListResponse<T> {
   items: T[];
@@ -163,6 +163,7 @@ export const confirmOrRejectSighting = async (
 };
 
 export const getSightings = async (): Promise<Sighting[]> => {
+  console.log(backendUrl);
   const response = await fetch(`${backendUrl}/sightings`);
   const sightingsListResponse: ListResponse<Sighting> = await response.json();
   return sightingsListResponse.items;
@@ -200,10 +201,13 @@ export async function createSighting(
 }
 
 export const getExternalSightings = async (): Promise<ExternalSighting[]> => {
-  const response = await fetch(
-    `https://whale-spotting-external-api.herokuapp.com/api/sightings`
-  );
-  const listResponse: SightingListResponse = await response.json();
+  //the site depended on an external API - I've disabled it to show how the internal site worked
+
+  // const response = await fetch(
+  //   `https://whale-spotting-external-api.herokuapp.com/api/sightings`
+  // );
+  // const listResponse: SightingListResponse = await response.json();
+  const listResponse: SightingListResponse = { sightings: [] };
   return listResponse.sightings;
 };
 

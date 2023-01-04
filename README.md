@@ -68,3 +68,5 @@ npm start
 ```
 
 It will run a file watcher and update when files are changed. Stop it with Ctrl+C.
+
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL

@@ -113,7 +113,6 @@ namespace WhaleSpotting.Services
                             {
                                 var longFormName = data.Data.First().Country ?? data.Data.First().Name;
                                 var location = _locations.GetOrCreateLocationByName(longFormName);
-                                Console.WriteLine(location.Id);
                                 return location;
                             }
                             else

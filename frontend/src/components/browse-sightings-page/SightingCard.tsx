@@ -49,15 +49,13 @@ export const SightingCard: React.FunctionComponent<SightingProps> = ({
   return (
     <div className="sighting-card">
       {speciesName ? (
-        <h3 className="sighting-card__title fade-in">
-          Sighting of {speciesName}
-        </h3>
+        <h3 className="sighting-card__title fade-in">{speciesName} sighting</h3>
       ) : (
         <h3 className="sighting-card__title fade-in">
-          Sighting recorded by {seenBy ?? "an anonymous whale spotter"}
+          Unknown Species sighting
         </h3>
       )}
-
+      <h4 className="sighting-card__name fade-in">Spotted by {seenBy}</h4>
       <p className="sighting-card__date fade-in">
         {format(new Date(seenOn), "do MMM yyyy")}
       </p>
@@ -76,30 +74,26 @@ export const SightingCard: React.FunctionComponent<SightingProps> = ({
       )}
 
       <div className="card-data fade-in">
-        {description ? (
-          <p>
-            <span className="sighting-card__information">
-              Description of sighting:{" "}
-            </span>
-            {description}
+        {locationName ? (
+          <p className="sighting-card__information-container">
+            <span className="sighting-card__information">Location: </span>
+            {locationName}
           </p>
         ) : (
           <></>
         )}
         {whaleCount ? (
-          <p>
-            <span className="sighting-card__information">
-              Number of whales seen:{" "}
-            </span>
+          <p className="sighting-card__information-container">
+            <span className="sighting-card__information">Whalecount: </span>
             {whaleCount}
           </p>
         ) : (
           <></>
         )}
-        {locationName ? (
-          <p>
-            <span className="sighting-card__information">Location: </span>
-            {locationName}
+        {description ? (
+          <p className="sighting-card__information-container">
+            <span className="sighting-card__information">Description: </span>
+            {description}
           </p>
         ) : (
           <></>

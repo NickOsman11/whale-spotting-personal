@@ -45,7 +45,7 @@ export const SightingMap: React.FC<SightingMapProps> = ({ sightings }) => {
     };
   });
 
-  const apiKey = process.env["REACT_APP_MAP_API_KEY"];
+  const apiKey = process.env.REACT_APP_MAP_API_KEY;
   if (apiKey === undefined) {
     throw new Error(
       "Environment variable REACT_APP_MAP_API_KEY is not defined"

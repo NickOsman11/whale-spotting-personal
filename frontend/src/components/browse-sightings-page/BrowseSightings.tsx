@@ -33,7 +33,7 @@ export const BrowseSightings: React.FC = () => {
 
   useEffect(() => {
     if (speciesId === undefined) {
-      getSightings().then(setSightings);
+      getSightings().then((sightings) => setSightings(sightings));
       getExternalSightings().then(setExternalSightings);
     } else {
       getSightingsBySpeciesId(speciesId).then(setSightings);
@@ -71,6 +71,7 @@ export const BrowseSightings: React.FC = () => {
     contents = (
       <>
         <button
+          className="map-button"
           onClick={() => {
             setIsShowingMap(!isShowingMap);
           }}

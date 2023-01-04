@@ -16,9 +16,6 @@ export const WhaleCard: React.FC<WhaleCardProps> = ({ whale }) => {
       <div className="whale-card__description">
         Description: {whale.description}
       </div>
-      <div className="whale-card__conservation">
-        Conservation Status: {whale.conservationStatus.code}
-      </div>
     </Card>
   );
 };

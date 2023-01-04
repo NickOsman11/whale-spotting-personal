@@ -11,6 +11,9 @@ using WhaleSpotting.Services;
 using System.Reflection;
 using System.IO;
 using System.Text.Json.Serialization;
+using System.Linq;
+using System.Collections.Generic;
+using WhaleSpotting.Models.Database;
 
 namespace WhaleSpotting
 {
@@ -37,8 +40,8 @@ namespace WhaleSpotting
             builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
       });
 
-          services.AddControllers().AddJsonOptions(x =>
-       x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+      services.AddControllers().AddJsonOptions(x =>
+        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
       services.AddSwaggerGen(c =>
       {
@@ -105,6 +108,12 @@ namespace WhaleSpotting
         {
           context.Database.Migrate();
         }
+
+        using (var context = new WhaleSpottingDbContext())
+        {
+          context.Database.EnsureCreated();
+        }
+
       }
     }
   }

@@ -1,6 +1,10 @@
 @import "../../constants";
 $fade-in-time: 0.5s;
 
+.map-button {
+  margin: 7px;
+}
+
 .sighting-card {
   margin-bottom: 2rem;
   position: relative;
@@ -26,14 +30,26 @@ $fade-in-time: 0.5s;
     margin-bottom: 0px;
   }
 
+  .sighting-card__name {
+    font-size: 12px;
+    padding-left: 2rem;
+    margin: 0;
+  }
+
   .sighting-card__date {
     font-size: 12px;
     padding-left: 2rem;
-    margin: 5px 0px;
+    margin: 0;
+  }
+
+  .sighting-card__information-container {
+    margin-top: 4px;
+    margin-bottom: 4px;
   }
 
   .sighting-card__information {
     font-weight: bold;
+    margin: 0px;
   }
 
   .image {

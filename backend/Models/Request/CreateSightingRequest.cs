@@ -10,7 +10,7 @@ namespace WhaleSpotting.Models.Request
         public string SeenBy { get; set; }
 
         [Required]
-        public DateTime SeenOn { get; set; }
+        public DateOnly SeenOn { get; set; }
 
         [Required]
         public float Latitude { get; set; }
