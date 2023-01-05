@@ -38,7 +38,6 @@ namespace WhaleSpotting.Services
 
         public IEnumerable<Sighting> GetSightings(GetSightingsRequest request)
         {
-            Console.WriteLine(request);
             return _sightings.GetSightings(request);
         }
 

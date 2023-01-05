@@ -39,12 +39,17 @@ namespace WhaleSpotting.Repositories
 
         public IEnumerable<Sighting> GetSightings(GetSightingsRequest request)
         {
+            bool filterByDistance = request.Lat != null && request.Long != null && request.Dist != null;
+
             return _context
                 .Sightings
                 .Include(s => s.Species)
                 .Include(s => s.Location)
                 .Where(s => (request.SpeciesId != null ? s.Species.Id == request.SpeciesId : true ))
                 .Where(s => (request.LocationId != null ? s.Location.Id == request.LocationId : true ))
+                .Where(s => (filterByDistance ? ((Math.Acos(Math.Sin(s.Latitude * 0.0175) * Math.Sin((request.Lat ?? 0) * 0.0175) 
+                    + Math.Cos(s.Latitude * 0.0175) * Math.Cos((request.Lat ?? 0) * 0.0175) *    
+                    Math.Cos(((request.Long ?? 0) * 0.0175) - (s.Longitude * 0.0175))) * 3959) <= request.Dist) : true))
                 .Where(s => s.ConfirmationStatus == ConfirmationStatus.Approved);
         }
 
