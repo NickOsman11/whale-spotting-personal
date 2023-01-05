@@ -27,10 +27,18 @@ namespace WhaleSpotting.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ListResponse<Sighting>> GetApprovedSightings()
+        public ActionResult<ListResponse<Sighting>> GetSightings([FromQuery] GetSightingsRequest request)
         {
-            var approvedSightings = _sightings.GetApprovedSightings();
-            return new ListResponse<Sighting>(approvedSightings);
+            try
+            {
+                var sightings = _sightings.GetSightings(request);
+                return new ListResponse<Sighting>(sightings);
+            }
+            catch
+            {
+                //TODO: proper error handling
+                return BadRequest();
+            }
         }
 
         [HttpGet("species/{speciesId}")]

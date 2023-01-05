@@ -4,18 +4,19 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WhaleSpotting.Models.Database;
+using WhaleSpotting.Models.Request;
 
 namespace WhaleSpotting.Repositories
 {
     public interface ISightingRepo
     {
-        IEnumerable<Sighting> GetApprovedSightings();
-        IEnumerable<Sighting> GetSightingsBySpeciesId(int speciesId);
+        IEnumerable<Sighting> GetSightings(GetSightingsRequest request);
+        IEnumerable<Sighting> GetSightingsBySpeciesId(int? speciesId);
         IEnumerable<Sighting> GetPendingSightings();
         Sighting CreateSighting(Sighting createSightingRequest);
         Sighting ConfirmRequest(int sightingId);
         Sighting RejectRequest(int sightingId);
-        IEnumerable<Sighting> GetSightingsByLocationId(int locationId);
+        IEnumerable<Sighting> GetSightingsByLocationId(int? locationId);
         Sighting GetSightingById(int sightingId);
     }
 
@@ -36,12 +37,14 @@ namespace WhaleSpotting.Repositories
             return insertedSighting.Entity;
         }
 
-        public IEnumerable<Sighting> GetApprovedSightings()
+        public IEnumerable<Sighting> GetSightings(GetSightingsRequest request)
         {
             return _context
                 .Sightings
                 .Include(s => s.Species)
                 .Include(s => s.Location)
+                .Where(s => (request.SpeciesId != null ? s.Species.Id == request.SpeciesId : true ))
+                .Where(s => (request.LocationId != null ? s.Location.Id == request.LocationId : true ))
                 .Where(s => s.ConfirmationStatus == ConfirmationStatus.Approved);
         }
 
@@ -50,7 +53,7 @@ namespace WhaleSpotting.Repositories
             return _context.Sightings.Where(s => s.ConfirmationStatus == ConfirmationStatus.Pending);
         }
 
-        public IEnumerable<Sighting> GetSightingsBySpeciesId(int speciesId)
+        public IEnumerable<Sighting> GetSightingsBySpeciesId(int? speciesId)
         {
             return _context.Sightings
                 .Include(s => s.Species)
@@ -84,7 +87,7 @@ namespace WhaleSpotting.Repositories
             throw new ArgumentException($"The sighting with ID {sightingId} could not be found");
         }
 
-        public IEnumerable<Sighting> GetSightingsByLocationId(int locationId)
+        public IEnumerable<Sighting> GetSightingsByLocationId(int? locationId)
         {
             return _context.Sightings
                 .Include(s => s.Species)

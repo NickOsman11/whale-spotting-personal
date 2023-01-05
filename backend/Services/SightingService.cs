@@ -13,7 +13,7 @@ namespace WhaleSpotting.Services
 {
     public interface ISightingService
     {
-        IEnumerable<Sighting> GetApprovedSightings();
+        IEnumerable<Sighting> GetSightings(GetSightingsRequest request);
         IEnumerable<Sighting> GetPendingSightings();
         IEnumerable<Sighting> GetSightingsBySpeciesId(int speciesId);
         Task<Sighting> CreateSightingAsync(CreateSightingRequest request);
@@ -36,14 +36,15 @@ namespace WhaleSpotting.Services
             _locations = locations;
         }
 
+        public IEnumerable<Sighting> GetSightings(GetSightingsRequest request)
+        {
+            Console.WriteLine(request);
+            return _sightings.GetSightings(request);
+        }
+
         public IEnumerable<Sighting> GetSightingsBySpeciesId(int speciesId)
         {
             return _sightings.GetSightingsBySpeciesId(speciesId);
-        }
-
-        public IEnumerable<Sighting> GetApprovedSightings()
-        {
-            return _sightings.GetApprovedSightings();
         }
 
         public IEnumerable<Sighting> GetPendingSightings()
