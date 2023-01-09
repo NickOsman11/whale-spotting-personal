@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import {
   getAllSpecies,
   getAllLocations,
@@ -36,7 +36,7 @@ export const BrowseSightingsControls = ({
 
   const [species, setSpecies] = useState<Species[]>();
   const [locations, setLocations] = useState<Location[]>();
-  const [filtersToApply, setFiltersToApply] = useState<Filters>({
+  const [filters, setFilters] = useState<Filters>({
     species: [],
     locations: [],
   });
@@ -46,23 +46,40 @@ export const BrowseSightingsControls = ({
     getAllLocations().then((allLocations) => setLocations(allLocations));
   }, []);
 
+  //sets filters if they are already filters active when the page loads (eg from bookmarked search)
+  useEffect(() => {
+    species &&
+      setFilters({
+        ...filters,
+        species: species.filter((s) =>
+          query.getAll("speciesid").includes(s.id.toString())
+        ),
+      });
+  }, [species]);
+  useEffect(() => {
+    locations &&
+      setFilters({
+        ...filters,
+        locations: locations.filter((l) =>
+          query.getAll("locationid").includes(l.id.toString())
+        ),
+      });
+  }, [locations]);
+
   const addFilter = (param: Location | Species) => {
-    const newFiltersToApply = { ...filtersToApply };
-    if ("species" in param && !filtersToApply.locations.includes(param)) {
+    const newFiltersToApply = { ...filters };
+    if ("species" in param && !filters.locations.includes(param)) {
       //location
       newFiltersToApply.locations.push(param);
-    } else if (
-      "locations" in param &&
-      !filtersToApply.species.includes(param)
-    ) {
+    } else if ("locations" in param && !filters.species.includes(param)) {
       //species
       newFiltersToApply.species.push(param);
     }
-    setFiltersToApply(newFiltersToApply);
+    setFilters(newFiltersToApply);
   };
 
   const removeFilter = (param: Location | Species) => {
-    const newFiltersToApply = { ...filtersToApply };
+    const newFiltersToApply = { ...filters };
     if ("species" in param) {
       //location
       newFiltersToApply.locations = newFiltersToApply.locations.filter(
@@ -74,7 +91,7 @@ export const BrowseSightingsControls = ({
         (s) => s.id !== param.id
       );
     }
-    setFiltersToApply(newFiltersToApply);
+    setFilters(newFiltersToApply);
   };
 
   const applyFilters = () => {
@@ -83,10 +100,10 @@ export const BrowseSightingsControls = ({
 
   const getQueryString = () => {
     const newQuery = new URLSearchParams();
-    filtersToApply.locations.forEach((location) =>
+    filters.locations.forEach((location) =>
       newQuery.append("locationid", `${location.id}`)
     );
-    filtersToApply.species.forEach((species) =>
+    filters.species.forEach((species) =>
       newQuery.append("speciesid", `${species.id}`)
     );
     setQuery(newQuery);
@@ -99,7 +116,7 @@ export const BrowseSightingsControls = ({
       <div className="filter-container">
         <div className="location-filter">
           <ol>
-            {filtersToApply.locations.map((location) => {
+            {filters.locations.map((location) => {
               return (
                 <li key={location.id} className="selected-location">
                   <p>{location.description}</p>
@@ -126,7 +143,7 @@ export const BrowseSightingsControls = ({
 
         <div className="species-filter">
           <ol>
-            {filtersToApply.species.map((species) => {
+            {filters.species.map((species) => {
               return (
                 <li key={species.id} className="selected-species">
                   <p>{species.name}</p>

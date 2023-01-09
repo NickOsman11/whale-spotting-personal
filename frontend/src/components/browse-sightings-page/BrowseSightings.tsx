@@ -12,7 +12,7 @@ import {
 import { SightingMap } from "../sighting-map/SightingMap";
 import { SightingList } from "../sighting-list/SightingList";
 import "./BrowseSightings.scss";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { compareDesc } from "date-fns";
 import { BrowseSightingsControls } from "./BrowseSightingsContols";
 
