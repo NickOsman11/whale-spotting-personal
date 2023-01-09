@@ -1,3 +1,5 @@
-.locations-list {
-  list-style: none;
+.filter-container {
+  & ol {
+    list-style: none;
+  }
 }
