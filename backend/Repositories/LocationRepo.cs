@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using WhaleSpotting.Models.Database;
 
@@ -6,6 +7,7 @@ namespace WhaleSpotting.Repositories
 {
     public interface ILocationRepo
     {
+        IEnumerable<Location> GetAllLocations();
         Location GetLocationById(int locationId);
         Location GetOrCreateLocationByName(string locationName); 
         Location AddLocation(Location newLocation);
@@ -41,6 +43,11 @@ namespace WhaleSpotting.Repositories
            _context.SaveChanges();
 
            return insertedLocation.Entity;
+        }
+
+        public IEnumerable<Location> GetAllLocations()
+        {
+            return _context.Locations.ToList();
         }
     }
 }

@@ -12,14 +12,18 @@ import {
 import { SightingMap } from "../sighting-map/SightingMap";
 import { SightingList } from "../sighting-list/SightingList";
 import "./BrowseSightings.scss";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { compareDesc } from "date-fns";
+import { BrowseSightingsControls } from "./BrowseSightingsContols";
 
 export const BrowseSightings: React.FC = () => {
   const [sightings, setSightings] = useState<Sighting[]>();
   const [externalSightings, setExternalSightings] =
     useState<ExternalSighting[]>();
   const [isShowingMap, setIsShowingMap] = useState(false);
+  const query = new URLSearchParams(useLocation().search);
+  query.append("locationid", "2");
+  console.log(query.toString());
   const { speciesId, locationId } = useParams<{
     speciesId: string;
     locationId: string;
@@ -71,15 +75,6 @@ export const BrowseSightings: React.FC = () => {
   } else {
     contents = (
       <>
-        <button
-          className="map-button"
-          onClick={() => {
-            setIsShowingMap(!isShowingMap);
-          }}
-        >
-          {isShowingMap ? "List View" : "Map View"}
-        </button>
-
         {isShowingMap ? (
           <SightingMap sightings={allSightings} />
         ) : (
@@ -92,6 +87,10 @@ export const BrowseSightings: React.FC = () => {
   return (
     <>
       <h1>Reported Sightings</h1>
+      <BrowseSightingsControls
+        isShowingMap={isShowingMap}
+        setIsShowingMap={setIsShowingMap}
+      />
       {contents}
     </>
   );

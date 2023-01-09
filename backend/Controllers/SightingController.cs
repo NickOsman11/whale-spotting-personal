@@ -48,6 +48,13 @@ namespace WhaleSpotting.Controllers
             return new ListResponse<Sighting>(sightings);
         }
 
+        [HttpGet("locations/{locationId}")]
+        public ActionResult<ListResponse<Sighting>> GetSightingsByLocationId([FromRoute] int locationId)
+        {
+            var sightings = _sightings.GetSightingsByLocationId(locationId);
+            return new ListResponse<Sighting>(sightings);
+        }
+
         [HttpGet("pending")]
         public ActionResult<ListResponse<Sighting>> GetPendingSightings()
         {
@@ -60,13 +67,6 @@ namespace WhaleSpotting.Controllers
         {
             var createdSighting = await _sightings.CreateSightingAsync(createSightingRequest);
             return Created("/api", createdSighting);
-        }
-
-        [HttpGet("locations/{locationId}")]
-        public ActionResult<ListResponse<Sighting>> GetSightingsByLocationId([FromRoute] int locationId)
-        {
-            var sightings = _sightings.GetSightingsByLocationId(locationId);
-            return new ListResponse<Sighting>(sightings);
         }
 
         [HttpPatch("{sightingId}/confirmation")]
@@ -103,10 +103,6 @@ namespace WhaleSpotting.Controllers
             catch (ArgumentException)
             {
                 return BadRequest();
-            }
-            catch (InvalidOperationException)
-            {
-                return NotFound();
             }
         }
         

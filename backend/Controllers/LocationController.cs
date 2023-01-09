@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using WhaleSpotting.Models.Database;
+using WhaleSpotting.Models.Response;
 using WhaleSpotting.Services;
 
 namespace WhaleSpotting.Controllers {
@@ -14,6 +15,14 @@ namespace WhaleSpotting.Controllers {
             ILocationService locations
         ) {
             _locations = locations;
+        }
+
+        [HttpGet]
+        public ActionResult<ListResponse<Location>> GetAllLocations()
+        {
+            //TODO: error handling
+            var locations = _locations.GetAllLocations();
+            return new ListResponse<Location>(locations);
         }
         
         [HttpGet("{locationId}")]

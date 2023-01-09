@@ -85,9 +85,10 @@ export interface CreateSightingRequest {
   longitude: number;
 }
 
-interface Location {
+export interface Location {
   id: number;
   description: string;
+  species: Species[];
 }
 
 export interface ConfirmOrRejectRequest {
@@ -112,6 +113,12 @@ export const getAllSpecies = async (): Promise<Species[]> => {
   const response = await fetch(`${backendUrl}/whales`);
   const whaleListResponse: ListResponse<Species> = await response.json();
   return whaleListResponse.items;
+};
+
+export const getAllLocations = async (): Promise<Location[]> => {
+  const response = await fetch(`${backendUrl}/locations`);
+  const locationListResponse: ListResponse<Location> = await response.json();
+  return locationListResponse.items;
 };
 
 export const getAllPendingSightings = async (): Promise<Sighting[]> => {
